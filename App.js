@@ -1,5 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import {
   GestureHandlerRootView,
   Gesture,
@@ -8,6 +13,8 @@ import {
 import { Header } from './components/Header';
 
 export default function InstagramPost(props) {
+  const { width: windowWidth } = useWindowDimensions();
+
   const singleTap = Gesture.Tap()
     .maxDuration(250)
     .onStart(() => {
@@ -31,15 +38,33 @@ export default function InstagramPost(props) {
       >
         <Header />
         <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
-          <View
-            style={{
-              height: 120,
-              width: 120,
-              backgroundColor: '#b58df1',
-              borderRadius: 20,
-              marginBottom: 30,
+          <ImageBackground
+            source={{
+              uri: 'https://legacy.reactjs.org/logo-og.png',
             }}
-          />
+            style={{
+              width: windowWidth,
+              height: windowWidth,
+              backgroundColor: 'transparent',
+            }}
+          >
+            <Image
+              source={{
+                uri: 'https://www.freeiconspng.com/thumbs/heart-icon/valentine-heart-icon-6.png',
+              }}
+              style={[
+                {
+                  width: windowWidth,
+                  height: windowWidth,
+                  shadowOffset: { width: 0, height: 20 },
+                  shadowOpacity: 0.35,
+                  shadowRadius: 35,
+                  backgroundColor: 'transparent',
+                },
+              ]}
+              resizeMode='center'
+            />
+          </ImageBackground>
         </GestureDetector>
       </View>
     </GestureHandlerRootView>
