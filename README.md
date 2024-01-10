@@ -16,6 +16,12 @@ An attempt to recreate the instagram feed post item UI in `react-native` with `r
 
 https://github.com/gupta-ji6/react-native-instagram-post-ui/assets/21218732/36e3be19-c9cf-433a-b9fe-5d1d016c2da4
 
+- [x] handle both single & double tap
+- [x] scale with spring
+- [ ] rotate while scaling (currently it rotates after scaling)
+- [x] rotation angle should be random
+- [x] translate to top after scale & rotate
+
 ## Contributing
 
 > [!NOTE]
