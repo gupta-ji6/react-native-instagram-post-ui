@@ -1,4 +1,6 @@
-# Reanimated example
+# react-native-instagram-post-ui
+
+An attempt to recreate the instagram feed post item UI in `react-native` with `react-native-reanimated` animations.
 
 <p>
   <!-- iOS -->
@@ -8,9 +10,16 @@
   <!-- Web -->
 </p>
 
-## 🚀 How to use
+## Features
 
-> `npx create-react-native-app my-app -t with-reanimated`
+### 1. ❤️ Double Tap to Like
+
+https://github.com/gupta-ji6/react-native-instagram-post-ui/assets/21218732/36e3be19-c9cf-433a-b9fe-5d1d016c2da4
+
+## Contributing
+
+> [!NOTE]
+> The project was created with command `npx create-expo-app@latest react-native-instagram-post-ui -e with-reanimated`
 
 - Run `yarn` or `npm install`
 - Run `yarn start` or `npm run start` to try it out.
