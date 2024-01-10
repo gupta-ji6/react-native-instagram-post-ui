@@ -12,30 +12,57 @@ import {
 } from 'react-native-gesture-handler';
 import { Header } from './components/Header';
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
-  withDelay,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
+const heartRotationDegress = [-35, -25, -15, 15, 25, 35];
 
 export default function InstagramPost(props) {
-  const { width: windowWidth } = useWindowDimensions();
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const scale = useSharedValue(0);
+  const rotate = useSharedValue(0);
+  const translateY = useSharedValue(0);
 
   const heartStyles = useAnimatedStyle(() => ({
     transform: [
       {
         scale: Math.max(scale.value, 0), // added Math.max to avoid negative values when withSping(0) is called
       },
+      {
+        rotate: `${rotate.value}deg`,
+      },
+      {
+        translateY: translateY.value,
+      },
     ],
   }));
 
   const onDoubelTapStart = useCallback(() => {
-    scale.value = withSpring(1.25, undefined, (isFinished) => {
+    const randomHeartRotationDegress =
+      heartRotationDegress[
+        Math.floor(Math.random() * heartRotationDegress.length)
+      ];
+
+    scale.value = withSpring(1.5, undefined, (isFinished) => {
       if (isFinished) {
-        scale.value = withDelay(500, withSpring(0));
+        rotate.value = withTiming(
+          randomHeartRotationDegress,
+          undefined,
+          (isFinished) => {
+            if (isFinished) {
+              rotate.value = withTiming(0);
+            }
+          }
+        );
+        translateY.value = withTiming(-windowHeight, {
+          duration: 1500,
+          easing: Easing.inOut(Easing.cubic),
+        });
       }
     });
   }, []);
