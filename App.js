@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import {
   Image,
   ImageBackground,
+  Text,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -10,16 +11,18 @@ import {
   Gesture,
   GestureDetector,
 } from 'react-native-gesture-handler';
-import { Header } from './components/Header';
 import Animated, {
   Easing,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { PostActions } from './components/PostActions';
+import { Header } from './components/Header';
 
 const heartRotationDegress = [-35, -25, -15, 15, 25, 35];
 const INITIAL_SCALE_VALUE = 0;
@@ -29,27 +32,37 @@ const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 export default function InstagramPost(props) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
-  const scale = useSharedValue(INITIAL_SCALE_VALUE);
-  const rotate = useSharedValue(INITIAL_ROTATE_VALUE);
-  const translateY = useSharedValue(INITIAL_TRANSLATE_Y_VALUE);
-  const opacity = useSharedValue(0);
+  const heartScale = useSharedValue(INITIAL_SCALE_VALUE);
+  const heartRotate = useSharedValue(INITIAL_ROTATE_VALUE);
+  const heartTranslateY = useSharedValue(INITIAL_TRANSLATE_Y_VALUE);
+  const tagIconOpacity = useSharedValue(0);
+  const tagOpacity = useSharedValue(0);
 
   const heartStyles = useAnimatedStyle(() => ({
     transform: [
       {
-        scale: Math.max(scale.value, INITIAL_SCALE_VALUE), // added Math.max to avoid negative values when withSping(0) is called
+        scale: Math.max(heartScale.value, INITIAL_SCALE_VALUE), // added Math.max to avoid negative values when withSping(0) is called
       },
       {
-        rotate: `${rotate.value}deg`,
+        rotate: `${heartRotate.value}deg`,
       },
       {
-        translateY: translateY.value,
+        translateY: heartTranslateY.value,
       },
     ],
   }));
 
+  const tagIconStyles = useAnimatedStyle(() => ({
+    opacity: tagIconOpacity.value,
+  }));
+
   const tagStyles = useAnimatedStyle(() => ({
-    opacity: opacity.value,
+    opacity: tagOpacity.value,
+    transform: [
+      {
+        scale: interpolate(tagOpacity.value, [0, 1], [0.5, 1]),
+      },
+    ],
   }));
 
   const onDoubelTapStart = useCallback(() => {
@@ -58,18 +71,18 @@ export default function InstagramPost(props) {
         Math.floor(Math.random() * heartRotationDegress.length)
       ];
 
-    scale.value = withSpring(1.5, undefined, (isFinished) => {
+    heartScale.value = withSpring(1.5, undefined, (isFinished) => {
       if (isFinished) {
-        rotate.value = withTiming(
+        heartRotate.value = withTiming(
           randomHeartRotationDegress,
           undefined,
           (isFinished) => {
             if (isFinished) {
-              rotate.value = withTiming(INITIAL_ROTATE_VALUE);
+              heartRotate.value = withTiming(INITIAL_ROTATE_VALUE);
             }
           }
         );
-        translateY.value = withTiming(
+        heartTranslateY.value = withTiming(
           -windowHeight / 2,
           {
             duration: 1250,
@@ -77,8 +90,8 @@ export default function InstagramPost(props) {
           },
           (isFinished) => {
             if (isFinished) {
-              scale.value = INITIAL_SCALE_VALUE;
-              translateY.value = INITIAL_TRANSLATE_Y_VALUE;
+              heartScale.value = INITIAL_SCALE_VALUE;
+              heartTranslateY.value = INITIAL_TRANSLATE_Y_VALUE;
             }
           }
         );
@@ -87,9 +100,15 @@ export default function InstagramPost(props) {
   }, []);
 
   const onSingleTapStart = useCallback(() => {
-    opacity.value = withTiming(1, undefined, (isFinished) => {
+    tagIconOpacity.value = withTiming(1, undefined, (isFinished) => {
       if (isFinished) {
-        opacity.value = withDelay(1000, withTiming(0));
+        tagIconOpacity.value = withDelay(1500, withTiming(0));
+      }
+    });
+
+    tagOpacity.value = withTiming(1, undefined, (isFinished) => {
+      if (isFinished) {
+        tagOpacity.value = withDelay(1500, withTiming(0));
       }
     });
   }, []);
@@ -138,30 +157,57 @@ export default function InstagramPost(props) {
             <Animated.View
               style={[
                 { position: 'absolute', left: 10, bottom: 10 },
-                tagStyles,
+                tagIconStyles,
               ]}
             >
-              <FontAwesome name='user-circle' size={24} color='black' />
+              <FontAwesome name='user' size={24} color='black' />
+            </Animated.View>
+
+            <Animated.View>
+              <Animated.View
+                style={[
+                  {
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    width: 'auto',
+                    position: 'absolute',
+                    left: 80,
+                    bottom: 100,
+                    borderRadius: 5,
+                  },
+                  tagStyles,
+                ]}
+              >
+                <Text style={{ color: 'white', fontWeight: '700' }}>
+                  hardikparasher
+                </Text>
+              </Animated.View>
+
+              <Animated.View
+                style={[
+                  {
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    width: 'auto',
+                    position: 'absolute',
+                    left: 200,
+                    bottom: 140,
+                    borderRadius: 5,
+                  },
+                  tagStyles,
+                ]}
+              >
+                <Text style={{ color: 'white', fontWeight: '700' }}>
+                  toucheypheonix
+                </Text>
+              </Animated.View>
             </Animated.View>
           </ImageBackground>
         </GestureDetector>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            columnGap: 10,
-          }}
-        >
-          <Ionicons name='heart-outline' size={28} color='black' />
-          <Ionicons name='chatbubble-outline' size={24} color='black' />
-          <Ionicons name='share-outline' size={24} color='black' />
-          <View style={{ marginLeft: 'auto' }}>
-            <Ionicons name='bookmark-outline' size={24} color='black' />
-          </View>
-        </View>
+        <PostActions />
       </View>
     </GestureHandlerRootView>
   );
