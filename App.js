@@ -15,10 +15,11 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 const heartRotationDegress = [-35, -25, -15, 15, 25, 35];
 const INITIAL_SCALE_VALUE = 0;
@@ -31,6 +32,7 @@ export default function InstagramPost(props) {
   const scale = useSharedValue(INITIAL_SCALE_VALUE);
   const rotate = useSharedValue(INITIAL_ROTATE_VALUE);
   const translateY = useSharedValue(INITIAL_TRANSLATE_Y_VALUE);
+  const opacity = useSharedValue(0);
 
   const heartStyles = useAnimatedStyle(() => ({
     transform: [
@@ -44,6 +46,10 @@ export default function InstagramPost(props) {
         translateY: translateY.value,
       },
     ],
+  }));
+
+  const tagStyles = useAnimatedStyle(() => ({
+    opacity: opacity.value,
   }));
 
   const onDoubelTapStart = useCallback(() => {
@@ -80,11 +86,15 @@ export default function InstagramPost(props) {
     });
   }, []);
 
-  const singleTap = Gesture.Tap()
-    .maxDuration(250)
-    .onStart(() => {
-      console.log('Single tap!');
+  const onSingleTapStart = useCallback(() => {
+    opacity.value = withTiming(1, undefined, (isFinished) => {
+      if (isFinished) {
+        opacity.value = withDelay(1000, withTiming(0));
+      }
     });
+  }, []);
+
+  const singleTap = Gesture.Tap().maxDuration(250).onStart(onSingleTapStart);
 
   const doubleTap = Gesture.Tap()
     .maxDuration(250)
@@ -124,6 +134,15 @@ export default function InstagramPost(props) {
               ]}
               resizeMode='center'
             />
+
+            <Animated.View
+              style={[
+                { position: 'absolute', left: 10, bottom: 10 },
+                tagStyles,
+              ]}
+            >
+              <FontAwesome name='user-circle' size={24} color='black' />
+            </Animated.View>
           </ImageBackground>
         </GestureDetector>
 
