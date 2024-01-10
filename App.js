@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Image,
   ImageBackground,
@@ -11,9 +11,34 @@ import {
   GestureDetector,
 } from 'react-native-gesture-handler';
 import { Header } from './components/Header';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+} from 'react-native-reanimated';
+
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 export default function InstagramPost(props) {
   const { width: windowWidth } = useWindowDimensions();
+  const scale = useSharedValue(0);
+
+  const heartStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: Math.max(scale.value, 0), // added Math.max to avoid negative values when withSping(0) is called
+      },
+    ],
+  }));
+
+  const onDoubelTapStart = useCallback(() => {
+    scale.value = withSpring(1.25, undefined, (isFinished) => {
+      if (isFinished) {
+        scale.value = withDelay(500, withSpring(0));
+      }
+    });
+  }, []);
 
   const singleTap = Gesture.Tap()
     .maxDuration(250)
@@ -24,9 +49,7 @@ export default function InstagramPost(props) {
   const doubleTap = Gesture.Tap()
     .maxDuration(250)
     .numberOfTaps(2)
-    .onStart(() => {
-      console.log('Double tap!');
-    });
+    .onStart(onDoubelTapStart);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -40,7 +63,7 @@ export default function InstagramPost(props) {
         <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
           <ImageBackground
             source={{
-              uri: 'https://legacy.reactjs.org/logo-og.png',
+              uri: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
             }}
             style={{
               width: windowWidth,
@@ -48,7 +71,7 @@ export default function InstagramPost(props) {
               backgroundColor: 'transparent',
             }}
           >
-            <Image
+            <AnimatedImage
               source={{
                 uri: 'https://www.freeiconspng.com/thumbs/heart-icon/valentine-heart-icon-6.png',
               }}
@@ -61,6 +84,7 @@ export default function InstagramPost(props) {
                   shadowRadius: 35,
                   backgroundColor: 'transparent',
                 },
+                heartStyles,
               ]}
               resizeMode='center'
             />

@@ -29,7 +29,7 @@ export const Header = () => {
         }}
       >
         <Text style={{ fontWeight: 'bold' }}>_.guptaji._</Text>
-        <Text style={{ fontSize: 12 }}>Shoja, Himachal Pradesh</Text>
+        <Text style={{ fontSize: 12 }}>Sethan, Himachal Pradesh</Text>
       </View>
 
       <View style={{ marginLeft: 'auto' }}>
