@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 export const Header = () => {
   return (
@@ -33,7 +34,7 @@ export const Header = () => {
       </View>
 
       <View style={{ marginLeft: 'auto' }}>
-        <Text style={{ fontWeight: 'bold' }}>:</Text>
+        <SimpleLineIcons name='options' size={16} color='black' />
       </View>
     </View>
   );

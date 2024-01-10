@@ -18,6 +18,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
 
 const heartRotationDegress = [-35, -25, -15, 15, 25, 35];
 const INITIAL_SCALE_VALUE = 0;
@@ -125,6 +126,23 @@ export default function InstagramPost(props) {
             />
           </ImageBackground>
         </GestureDetector>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            columnGap: 10,
+          }}
+        >
+          <Ionicons name='heart-outline' size={28} color='black' />
+          <Ionicons name='chatbubble-outline' size={24} color='black' />
+          <Ionicons name='share-outline' size={24} color='black' />
+          <View style={{ marginLeft: 'auto' }}>
+            <Ionicons name='bookmark-outline' size={24} color='black' />
+          </View>
+        </View>
       </View>
     </GestureHandlerRootView>
   );
