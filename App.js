@@ -59,10 +59,19 @@ export default function InstagramPost(props) {
             }
           }
         );
-        translateY.value = withTiming(-windowHeight, {
-          duration: 1500,
-          easing: Easing.inOut(Easing.cubic),
-        });
+        translateY.value = withTiming(
+          -windowHeight / 2,
+          {
+            duration: 1250,
+            easing: Easing.inOut(Easing.cubic),
+          },
+          (isFinished) => {
+            if (isFinished) {
+              scale.value = 0;
+              translateY.value = 0;
+            }
+          }
+        );
       }
     });
   }, []);
