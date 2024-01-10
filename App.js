@@ -19,19 +19,22 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const AnimatedImage = Animated.createAnimatedComponent(Image);
 const heartRotationDegress = [-35, -25, -15, 15, 25, 35];
+const INITIAL_SCALE_VALUE = 0;
+const INITIAL_ROTATE_VALUE = 0;
+const INITIAL_TRANSLATE_Y_VALUE = 0;
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 export default function InstagramPost(props) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
-  const scale = useSharedValue(0);
-  const rotate = useSharedValue(0);
-  const translateY = useSharedValue(0);
+  const scale = useSharedValue(INITIAL_SCALE_VALUE);
+  const rotate = useSharedValue(INITIAL_ROTATE_VALUE);
+  const translateY = useSharedValue(INITIAL_TRANSLATE_Y_VALUE);
 
   const heartStyles = useAnimatedStyle(() => ({
     transform: [
       {
-        scale: Math.max(scale.value, 0), // added Math.max to avoid negative values when withSping(0) is called
+        scale: Math.max(scale.value, INITIAL_SCALE_VALUE), // added Math.max to avoid negative values when withSping(0) is called
       },
       {
         rotate: `${rotate.value}deg`,
@@ -55,7 +58,7 @@ export default function InstagramPost(props) {
           undefined,
           (isFinished) => {
             if (isFinished) {
-              rotate.value = withTiming(0);
+              rotate.value = withTiming(INITIAL_ROTATE_VALUE);
             }
           }
         );
@@ -67,8 +70,8 @@ export default function InstagramPost(props) {
           },
           (isFinished) => {
             if (isFinished) {
-              scale.value = 0;
-              translateY.value = 0;
+              scale.value = INITIAL_SCALE_VALUE;
+              translateY.value = INITIAL_TRANSLATE_Y_VALUE;
             }
           }
         );
