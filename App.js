@@ -101,9 +101,7 @@ export default function InstagramPost(props) {
         <Header />
         <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
           <ImageBackground
-            source={{
-              uri: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
-            }}
+            source={require('./assets/dogs.jpeg')}
             style={{
               width: windowWidth,
               height: windowWidth,
@@ -111,9 +109,7 @@ export default function InstagramPost(props) {
             }}
           >
             <AnimatedImage
-              source={{
-                uri: 'https://www.freeiconspng.com/thumbs/heart-icon/valentine-heart-icon-6.png',
-              }}
+              source={require('./assets/heart.png')}
               style={[
                 {
                   width: windowWidth,
