@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
 export const Header = () => {
@@ -33,9 +33,9 @@ export const Header = () => {
         <Text style={{ fontSize: 12 }}>Sethan, Himachal Pradesh</Text>
       </View>
 
-      <View style={{ marginLeft: 'auto' }}>
+      <TouchableOpacity style={{ marginLeft: 'auto' }}>
         <SimpleLineIcons name='options' size={16} color='black' />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
