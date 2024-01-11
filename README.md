@@ -22,6 +22,15 @@ https://github.com/gupta-ji6/react-native-instagram-post-ui/assets/21218732/36e3
 - [x] rotation angle should be random
 - [x] translate to top after scale & rotate
 
+### 2. 🏷️ Show Tags on Single Tap
+
+https://github.com/gupta-ji6/react-native-instagram-post-ui/assets/21218732/755b1051-21d2-454b-b430-485f97c7ff4e
+
+- [x] show user icon at bottom left on single tap
+- [x] show multiple user tags on single tap
+- [x] animate tags & icon opacity
+- [ ] add arrow in tags component
+
 ## Contributing
 
 > [!NOTE]
